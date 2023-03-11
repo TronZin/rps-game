@@ -21,87 +21,224 @@ while Run game
 
     ask if new round
 */
-console.log("Let's play rock, paper and scissors!!");
-let MainLoopActive = true;
-while (MainLoopActive) {
-    game();
-    console.log("ROUND FINISHED");
-    let NewGameRequested = confirm("Wanna play again?");
-
-    if (!NewGameRequested) {
-        console.log("Thanks for playing :D");
-        MainLoopActive = false;
-    }
-}
 
 
+/*
+startgame
 
-function game() {
-    console.log("Starting Round");
-    let myScore = 0;
-    let pcScore = 0;
+        do 5 times()
+            change logs 
+            ask for option
+
+            make calculations
+            show log with winner
+
+        show final dom asking to start game again
+        
+
+    
+ */
+let numberOfRound = 1;
+
+let playerScore = 0;
+let pcScore = 0;
 
 
-    for (let i = 1; i<=5; i++) {
+window.addEventListener("keydown", askChoice, {once:true});
 
-        console.log(`Round ${i}`);
+const playerDisplay = document.querySelector(".playerDisplay");
+const pcDisplay = document.querySelector('.pcDisplay img'); //we will only change the pcs image
 
-        let userChoice = determineUserChoice();
-        if (userChoice === null) {return;}
+const playerLog = document.querySelector(".playerLog");
+const pcLog = document.querySelector(".pcLog");
 
-        let pcChoice = determinePcChoice();
+const footer = document.querySelector(".footer");
 
-        console.log(`Your choice: ${userChoice}`);
-        console.log(`Pc's choice: ${pcChoice}`);
+function askChoice(e) {
+    console.log(e.keyCode);
+    if (e.keyCode !== 32) return;
 
-        let winCase1 = (userChoice === "rock" && pcChoice === "scissors");
-        let winCase2 = (userChoice === "paper" && pcChoice === "rock");
-        let winCase3 = (userChoice === "scissors" && pcChoice === "paper");
+    const rpsButtons = `<div class="options">
+                        <button class="option rock">Rock</button>
+                        <button class="option paper">Paper</button>
+                        <button class="option scissors">Scissors</button>    
+                        </div>                    
+                       `;
+    playerDisplay.innerHTML = rpsButtons;
+    const buttons = document.querySelectorAll(".option");
 
-        if (userChoice === pcChoice) {
-            console.log("TIE");
-        }
-        else if (winCase1 || winCase2 || winCase3) {
-            console.log("POINT GOES TO USER");
-            myScore++;
-        }
-        else {
-            console.log("POINT GOES TO PC");
-            pcScore++;
-        }
-        console.log(`You: ${myScore} | Pc: ${pcScore}`)
-    }
+    
+    footer.textContent = `Round ${numberOfRound}`;
+    pcDisplay.src="images/pcThinking.png"
 
-    console.log("GAME HAS ENDED");
+    playerLog.textContent = playerScore;
+    playerLog.style.color = 'white';
+    playerLog.style.borderColor = 'white';
 
-    if (myScore === pcScore) {
-        console.log("It's a tie!!!!");
-    }
-    else if (myScore > pcScore) {
-        console.log("You win!!!");
+    pcLog.textContent = pcScore;
+    pcLog.style.color = "white";
+    pcLog.style.borderColor = "white";
+
+    
+
+    if (numberOfRound === 5) {
+        buttons.forEach(button => button.addEventListener("click", showWinner));
     }
     else {
-        console.log("Computer wins B)");
-    }
+        buttons.forEach(button => button.addEventListener("click", showResults));
+    }   
+
 }
 
+function showResults(e) {
+    playerChoice = e.target.textContent.toLowerCase(); //determineWinner function need lowercase params
+    pcChoice = determinePcChoice();
 
+    let playerColor;
+    let playerImg;
+    
+    let pcColor;
+    let pcImg;
 
-function determineUserChoice() {
-    while (true) {
-        let choice = prompt("Choose between rock,paper or scissors!");
-        if (choice === null) {return null;} 
-        else {choice = choice.toLowerCase();}
+    let resultTxt;
 
-        switch (choice) {
-            case "rock":
-            case "paper":
-            case "scissors":
-                return choice;
-            default:
-                console.log("That's not a valid choice! Try again");
-        }
-    } 
+    switch (determineWinner(playerChoice,pcChoice)) {
+        case "tie":
+            playerColor = "white";
+            playerImg = "images/playerTie.png";
+
+            pcColor = "white";
+            pcImg = "images/pcTie.png";
+
+            resultTxt = "It's a Tie";
+            break;
+            
+        case "userWins":
+            playerColor = "lime";
+            playerImg = "images/playerWinning.png";
+
+            pcColor = "red";
+            pcImg = "images/pcLosing.png";
+
+            resultTxt = "Point for Player";
+
+            playerScore++;
+            break;
+
+        case "pcWins":
+            playerColor = "red";
+            playerImg = "images/playerLosing.png";
+
+            pcColor = "lime";
+            pcImg = "images/pcWinning.png";
+
+            resultTxt = "Point for Pc";
+
+            pcScore++;
+            break;
+
+    }
+
+    playerDisplay.innerHTML = `<img src="${playerImg}"></img>`;
+    playerLog.textContent = playerChoice;
+    playerLog.style.color = playerColor;
+    playerLog.style.borderColor = playerColor;
+
+    pcDisplay.src = pcImg;
+    pcLog.textContent = pcChoice;
+    pcLog.style.color = pcColor;
+    pcLog.style.borderColor = pcColor;
+
+    footer.textContent = resultTxt;
+    
+    window.addEventListener("keydown", askChoice, {once:true});
+    numberOfRound++;
+
+}
+
+function determineWinner(user,pc) {
+    let winCase1 = (user === "rock" && pc === "scissors");
+    let winCase2 = (user === "paper" && pc === "rock");
+    let winCase3 = (user === "scissors" && pc === "paper");
+
+    if (user === pc) {
+        return "tie";
+    }
+    else if (winCase1 || winCase2 || winCase3) {
+        playerScore++;
+        return "userWins";
+    }
+    else {
+        pcScore++;
+        return "pcWins";
+    }    
+}
+
+function showWinner(e) {
+    let playerColor;
+    let playerImg;
+    let playerResult;
+    
+    let pcColor;
+    let pcImg;
+    let pcResult;
+
+    let resultTxt;
+    
+    if (playerScore === pcScore) {
+
+        playerColor = "white";
+        playerImg = "images/playerTie.png";
+        playerResult = "Tie";
+
+        pcColor = "white";
+        pcImg = "images/pcTie.png";
+        pcResult = "Tie";
+
+        resultTxt = "Game ends in a Tie!";
+    }
+    else if (playerScore > pcScore) {
+
+        playerColor = "lime";
+        playerImg = "images/playerWinning.png";
+        playerResult = "Winner";
+
+        pcColor = "red";
+        pcImg = "images/pcLosing.png";
+        pcResult = "Loser";
+
+        resultResult = "Player Wins!,";
+    }
+    else {
+        playerColor = "red";
+        playerImg = "images/playerLosing.png";
+        playerResult = "Loser";
+
+        pcColor = "lime";
+        pcImg = "images/pcWinning.png";
+        pcResult = "Winner";
+
+        resultTxt = "Pc Wins!";
+    }
+
+    playerDisplay.innerHTML = `<img src="${playerImg}"></img>`;
+    playerLog.textContent = playerResult;
+    playerLog.style.color = playerColor;
+    playerLog.style.borderColor = playerColor;
+
+    pcDisplay.src = pcImg;
+    pcLog.textContent = pcResult;
+    pcLog.style.color = pcColor;
+    pcLog.style.borderColor = pcColor;
+
+    footer.textContent = `${resultTxt}, Press SPACE for new round`;
+
+    window.addEventListener("keydown", askChoice, {once:true});
+
+    numberOfRound = 1;
+
+    playerScore = 0;
+    pcScore = 0;
 }
 
 function determinePcChoice() {
@@ -116,5 +253,4 @@ function determinePcChoice() {
             return "scissors";
     }
 }
-
 

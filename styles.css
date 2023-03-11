@@ -1,0 +1,139 @@
+
+body {
+    margin: 0;
+    height: 100vh;
+
+    background-color: #000000;
+
+    font-family:monospace;
+
+    display:flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: stretch;
+}
+
+.header {
+    margin: 0;
+    padding: 16px;
+    border: 3px solid #0f0;
+    background-color: #000000;
+
+    color: #0f0;
+    font-weight: 100;
+    font-size: 28px;
+
+
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    
+}
+
+.content  {
+    padding-block: min(30vh,10px);
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.player, .pc {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin: 15px;
+}
+
+.playerLog, .pcLog {
+    margin: 0;
+    padding: 16px;
+    background-color: #000000;
+
+    color: #0f0;
+    font-weight: 100;
+    font-size: 25px;
+
+    border: 3px solid #0f0;
+    border-radius: 25px;
+    
+
+    flex: 0 0 max-content;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+}
+
+img {
+    width: 600px;
+    height: auto;
+    border-radius: 25px;
+}
+
+
+.footer {
+    padding: 16px;
+
+    color: #0f0;
+    font-weight: 100;
+    font-size: 28px;
+    
+    border: 3px solid #0f0;
+    background-color: #000000;
+  
+    display: flex;
+    align-items: center;
+    justify-content: center;    
+}
+
+
+.playerDisplay, .pcDisplay{
+    border: 3px solid #0f0;
+    border-radius: 25px;
+    background-color: #363636;
+
+
+    width: 600px;
+    height: 450px;
+
+    display: flex;
+
+    justify-content: center;
+    align-items: stretch;
+}
+
+.options {
+    padding: 25px;
+
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: stretch;
+
+    gap: 25px;
+
+}
+
+.option {
+    padding: 16px;
+
+    color: #0f0;
+    font-weight: 100;
+    font-size: 25px;
+
+    background-color: #000000;
+    border: 3px solid #0f0;
+    border-radius: 25px;
+
+    flex: 1 1 max-content; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.option:hover {
+    color: white;
+    border-color: white;
+
+}
