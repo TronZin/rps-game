@@ -1,58 +1,22 @@
-/*
-function game
-    for each game
-        ask user for choice rps
-        ask again if invalid
 
-        generate computer choice rps
-
-        compare two choices
-            convert choices two numbers
-            determine if you won
-            determine if pc wins
-            determine if tie
-
-        give point to winner
-    
-    declare winner based on points
-
-while Run game
-    run function game
-
-    ask if new round
-*/
-
-
-/*
-startgame
-
-        do 5 times()
-            change logs 
-            ask for option
-
-            make calculations
-            show log with winner
-
-        show final dom asking to start game again
-        
-
-    
- */
 let numberOfRound = 1;
 
 let playerScore = 0;
 let pcScore = 0;
 
 
-window.addEventListener("keydown", askChoice, {once:true});
 
 const playerDisplay = document.querySelector(".playerDisplay");
-const pcDisplay = document.querySelector('.pcDisplay img'); //we will only change the pcs image
+const pcDisplay = document.querySelector(".pcDisplay");
 
 const playerLog = document.querySelector(".playerLog");
 const pcLog = document.querySelector(".pcLog");
 
 const footer = document.querySelector(".footer");
+
+
+window.addEventListener("keydown", askChoice, {once:true});
+
 
 function askChoice(e) {
     console.log(e.keyCode);
@@ -62,14 +26,17 @@ function askChoice(e) {
                         <button class="option rock">Rock</button>
                         <button class="option paper">Paper</button>
                         <button class="option scissors">Scissors</button>    
-                        </div>                    
-                       `;
+                        </div>`;
+
+    
+                
     playerDisplay.innerHTML = rpsButtons;
     const buttons = document.querySelectorAll(".option");
 
     
     footer.textContent = `Round ${numberOfRound}`;
-    pcDisplay.src="images/pcThinking.png"
+    pcDisplay.innerHTML = '<img src="images/pcThinking.png"></img>';
+   
 
     playerLog.textContent = playerScore;
     playerLog.style.color = 'white';
@@ -104,10 +71,10 @@ function showResults(e) {
 
     switch (determineWinner(playerChoice,pcChoice)) {
         case "tie":
-            playerColor = "white";
+            playerColor = "yellow";
             playerImg = "images/playerTie.png";
 
-            pcColor = "white";
+            pcColor = "yellow";
             pcImg = "images/pcTie.png";
 
             resultTxt = "It's a Tie";
@@ -161,20 +128,29 @@ function determineWinner(user,pc) {
     let winCase2 = (user === "paper" && pc === "rock");
     let winCase3 = (user === "scissors" && pc === "paper");
 
-    if (user === pc) {
+    if (user === pc) 
         return "tie";
-    }
-    else if (winCase1 || winCase2 || winCase3) {
-        playerScore++;
+    else if (winCase1 || winCase2 || winCase3) 
         return "userWins";
-    }
-    else {
-        pcScore++;
+    else 
         return "pcWins";
-    }    
 }
 
 function showWinner(e) {
+    playerChoice = e.target.textContent.toLowerCase(); //determineWinner function need lowercase params
+    pcChoice = determinePcChoice();
+
+    switch (determineWinner(playerChoice,pcChoice)) {
+        case "tie":
+            break; 
+        case "userWins":
+            playerScore++;
+            break;
+        case "pcWins":
+            pcScore++;
+            break;
+    }
+    
     let playerColor;
     let playerImg;
     let playerResult;
@@ -187,11 +163,11 @@ function showWinner(e) {
     
     if (playerScore === pcScore) {
 
-        playerColor = "white";
+        playerColor = "yellow";
         playerImg = "images/playerTie.png";
         playerResult = "Tie";
 
-        pcColor = "white";
+        pcColor = "yellow";
         pcImg = "images/pcTie.png";
         pcResult = "Tie";
 
@@ -207,7 +183,7 @@ function showWinner(e) {
         pcImg = "images/pcLosing.png";
         pcResult = "Loser";
 
-        resultResult = "Player Wins!,";
+        resultTxt = "Player Wins!";
     }
     else {
         playerColor = "red";
