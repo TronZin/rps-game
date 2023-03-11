@@ -5,7 +5,9 @@ let playerScore = 0;
 let pcScore = 0;
 
 
+const header = document.querySelector(".header");
 
+const content = document.querySelector(".content");
 const playerDisplay = document.querySelector(".playerDisplay");
 const pcDisplay = document.querySelector(".pcDisplay");
 
@@ -91,7 +93,6 @@ function showResults(e) {
 
             playerScore++;
             break;
-
         case "pcWins":
             playerColor = "red";
             playerImg = "images/playerLosing.png";
@@ -111,7 +112,7 @@ function showResults(e) {
     playerLog.style.color = playerColor;
     playerLog.style.borderColor = playerColor;
 
-    pcDisplay.src = pcImg;
+    pcDisplay.innerHTML = `<img src="${pcImg}"></img>`;
     pcLog.textContent = pcChoice;
     pcLog.style.color = pcColor;
     pcLog.style.borderColor = pcColor;
@@ -123,54 +124,42 @@ function showResults(e) {
 
 }
 
-function determineWinner(user,pc) {
-    let winCase1 = (user === "rock" && pc === "scissors");
-    let winCase2 = (user === "paper" && pc === "rock");
-    let winCase3 = (user === "scissors" && pc === "paper");
-
-    if (user === pc) 
-        return "tie";
-    else if (winCase1 || winCase2 || winCase3) 
-        return "userWins";
-    else 
-        return "pcWins";
-}
 
 function showWinner(e) {
     playerChoice = e.target.textContent.toLowerCase(); //determineWinner function need lowercase params
     pcChoice = determinePcChoice();
-
+    
     switch (determineWinner(playerChoice,pcChoice)) {
         case "tie":
             break; 
-        case "userWins":
-            playerScore++;
+            case "userWins":
+                playerScore++;
             break;
         case "pcWins":
             pcScore++;
             break;
-    }
+        }
     
-    let playerColor;
-    let playerImg;
-    let playerResult;
+        let playerColor;
+        let playerImg;
+        let playerResult;
+        
+        let pcColor;
+        let pcImg;
+        let pcResult;
+        
+        let resultTxt;
     
-    let pcColor;
-    let pcImg;
-    let pcResult;
+        if (playerScore === pcScore) {
 
-    let resultTxt;
-    
-    if (playerScore === pcScore) {
-
-        playerColor = "yellow";
+            playerColor = "yellow";
         playerImg = "images/playerTie.png";
         playerResult = "Tie";
-
+        
         pcColor = "yellow";
         pcImg = "images/pcTie.png";
         pcResult = "Tie";
-
+        
         resultTxt = "Game ends in a Tie!";
     }
     else if (playerScore > pcScore) {
@@ -178,11 +167,11 @@ function showWinner(e) {
         playerColor = "lime";
         playerImg = "images/playerWinning.png";
         playerResult = "Winner";
-
+        
         pcColor = "red";
         pcImg = "images/pcLosing.png";
         pcResult = "Loser";
-
+        
         resultTxt = "Player Wins!";
     }
     else {
@@ -199,34 +188,67 @@ function showWinner(e) {
 
     playerDisplay.innerHTML = `<img src="${playerImg}"></img>`;
     playerLog.textContent = playerResult;
-    playerLog.style.color = playerColor;
-    playerLog.style.borderColor = playerColor;
-
-    pcDisplay.src = pcImg;
+    changeDomColor(playerColor);
+    
+    pcDisplay.innerHTML = `<img src="${pcImg}"></img>`;
     pcLog.textContent = pcResult;
     pcLog.style.color = pcColor;
     pcLog.style.borderColor = pcColor;
-
+    
     footer.textContent = `${resultTxt}, Press SPACE for new round`;
-
-    window.addEventListener("keydown", askChoice, {once:true});
-
+    
+    window.addEventListener("keydown", () => {askChoice();changeDomColor("white");}, {once:true});
+    
     numberOfRound = 1;
-
+    
     playerScore = 0;
     pcScore = 0;
+
 }
 
 function determinePcChoice() {
     let randomNumber = Math.floor(Math.random() * (2 - 0 + 1) + 0) ;
-
+    
     switch (randomNumber) {
         case 0:
             return "rock";
-        case 1:
-            return "paper";
+            case 1:
+                return "paper";
         case 2:
             return "scissors";
     }
 }
 
+function determineWinner(user,pc) {
+    let winCase1 = (user === "rock" && pc === "scissors");
+    let winCase2 = (user === "paper" && pc === "rock");
+    let winCase3 = (user === "scissors" && pc === "paper");
+
+    if (user === pc) 
+        return "tie";
+    else if (winCase1 || winCase2 || winCase3) 
+        return "userWins";
+    else 
+        return "pcWins";
+}
+
+function changeDomColor(color) {
+    header.style.color = color;
+    header.style.borderColor = color;
+
+    content.style.color = color;
+    content.style.borderColor = color;
+    
+    playerDisplay.style.color = color;
+    playerDisplay.style.borderColor = color;
+    pcDisplay.style.color = color;
+    pcDisplay.style.borderColor = color;
+
+    playerLog.style.color = color;
+    playerLog.style.borderColor = color;
+    pcLog.style.color = color;
+    pcLog.style.borderColor = color;
+
+    footer.style.color = color;
+    footer.style.borderColor = color;
+}
