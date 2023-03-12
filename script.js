@@ -24,6 +24,8 @@ function askChoice(e) {
     
     if (e.keyCode !== 32) return;
 
+    changeDomColor("white");
+
     const rpsButtons = `<div class="options">
                         <button class="option rock">Rock</button>
                         <button class="option paper">Paper</button>
@@ -199,7 +201,7 @@ function showWinner(e) {
     
     footer.textContent = `${resultTxt}, Press SPACE for new round`;
     
-    window.addEventListener("keydown", (e) => {askChoice(e);changeDomColor("white");}, {once:true});
+    window.addEventListener("keydown",askChoice, {once:true});
     
     numberOfRound = 1;
     
