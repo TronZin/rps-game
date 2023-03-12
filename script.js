@@ -21,7 +21,7 @@ window.addEventListener("keydown", askChoice, {once:true});
 
 
 function askChoice(e) {
-    console.log(e.keyCode);
+    
     if (e.keyCode !== 32) return;
 
     const rpsButtons = `<div class="options">
@@ -192,12 +192,14 @@ function showWinner(e) {
     
     pcDisplay.innerHTML = `<img src="${pcImg}"></img>`;
     pcLog.textContent = pcResult;
+
+    pcDisplay.style.borderColor = pcColor;
     pcLog.style.color = pcColor;
     pcLog.style.borderColor = pcColor;
     
     footer.textContent = `${resultTxt}, Press SPACE for new round`;
     
-    window.addEventListener("keydown", () => {askChoice();changeDomColor("white");}, {once:true});
+    window.addEventListener("keydown", (e) => {askChoice(e);changeDomColor("white");}, {once:true});
     
     numberOfRound = 1;
     
